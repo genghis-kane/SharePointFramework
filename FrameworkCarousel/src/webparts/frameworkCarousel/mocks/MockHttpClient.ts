@@ -12,8 +12,4 @@ export default class MockHttpClient {
             resolve(MockHttpClient._items);
         });
     }
-
-    public static getSynch(restUrl: string, options?: any): NewsArticleItem[] {
-        return (MockHttpClient._items);
-    }
 }

@@ -1,5 +1,10 @@
+
+//React references
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
+
+//SP references
+import { EnvironmentType } from '@microsoft/sp-client-base';
 import {
   BaseClientSideWebPart,
   IPropertyPaneSettings,
@@ -7,6 +12,7 @@ import {
   PropertyPaneTextField
 } from '@microsoft/sp-client-preview';
 
+//Local references
 import * as strings from 'frameworkCarouselStrings';
 import FrameworkCarousel, { IFrameworkCarouselProps } from './components/FrameworkCarousel';
 import { IFrameworkCarouselWebPartProps } from './IFrameworkCarouselWebPartProps';
@@ -20,13 +26,17 @@ export default class FrameworkCarouselWebPart extends BaseClientSideWebPart<IFra
   }
 
   public render(): void {
-    var newsArticles: NewsArticleItem[] = this._getMockNewsArticles();
+    if (this.context.environment.type === EnvironmentType.Local) {
+      this._getMockNewsArticles().then((response) => {
+        const element: React.ReactElement<IFrameworkCarouselProps> = React.createElement(FrameworkCarousel,
+          { description: this.properties.description, newsArticles: response }
+        );
 
-    const element: React.ReactElement<IFrameworkCarouselProps> = React.createElement(FrameworkCarousel,
-      { description: this.properties.description, newsArticles: newsArticles }
-    );
-
-    ReactDom.render(element, this.domElement);
+        ReactDom.render(element, this.domElement);
+      });
+    } else {
+      //use real data
+    }
   }
 
   protected get propertyPaneSettings(): IPropertyPaneSettings {
@@ -51,14 +61,17 @@ export default class FrameworkCarouselWebPart extends BaseClientSideWebPart<IFra
     };
   }
 
-  private _getMockNewsArticles(): NewsArticleItem[] {
-    return MockHttpClient.getSynch(this.context.pageContext.web.absoluteUrl)
+  private _getMockNewsArticles(): Promise<NewsArticleItem[]> {
+    return MockHttpClient.get(this.context.pageContext.web.absoluteUrl)
+      .then((data: NewsArticleItem[]) => {
+        return data;
+      }) as Promise<NewsArticleItem[]>;
   }
 
   private _getNewsArticles(): Promise<NewsArticleItem[]> {
     return this.context.httpClient.get(this.context.pageContext.web.absoluteUrl + `/_api/web/lists?$filter=Hidden eq false`)
-    .then((response: Response) => {
-      return response.json();
-    });
+      .then((response: Response) => {
+        return response.json();
+      });
   }
 }
