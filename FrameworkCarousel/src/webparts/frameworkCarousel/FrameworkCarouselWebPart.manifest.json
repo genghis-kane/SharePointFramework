@@ -1,0 +1,19 @@
+{
+  "$schema": "../../../node_modules/@microsoft/sp-module-interfaces/lib/manifestSchemas/jsonSchemas/clientSideComponentManifestSchema.json",
+
+  "id": "53f1b087-82cf-4ab4-802a-606917a75065",
+  "componentType": "WebPart",
+  "version": "0.0.1",
+  "manifestVersion": 2,
+
+  "preconfiguredEntries": [{
+    "groupId": "53f1b087-82cf-4ab4-802a-606917a75065",
+    "group": { "default": "Under Development" },
+    "title": { "default": "FrameworkCarousel" },
+    "description": { "default": "A News Article carousel built with React using the SharePoint Framework. Content is pulled up using the AppearOnCarousel column." },
+    "officeFabricIconFontName": "Page",
+    "properties": {
+      "description": "FrameworkCarousel"
+    }
+  }]
+}

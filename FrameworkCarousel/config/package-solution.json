@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "name": "framework-carousel-client-side-solution",
+    "id": "02fb0674-0159-4a8a-a00b-4209d2e9d632",
+    "version": "1.0.0.0"
+  },
+  "paths": {
+    "zippedPackage": "solution/framework-carousel.spapp"
+  }
+}
